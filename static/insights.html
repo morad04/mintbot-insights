@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MintBot — Alpha Engine</title>
+    <meta name="description" content="NFT Alpha Engine — predictive intelligence, ranking, and actionable signals">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/index.css?v=51">
+    <style>
+        /* ═══ Alpha Engine Dashboard ═══ */
+
+        /* ── Regime Header ── */
+        .alpha-header {
+            background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 0;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .alpha-header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .alpha-regime-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: var(--font-label);
+            letter-spacing: 0.02em;
+        }
+
+        .alpha-regime-RISK_ON {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .alpha-regime-RISK_OFF {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .alpha-regime-ROTATION {
+            background: rgba(96, 165, 250, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+        }
+
+        .alpha-regime-CHOP {
+            background: rgba(156, 163, 175, 0.12);
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.2);
+        }
+
+        .alpha-regime-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .alpha-regime-RISK_ON .alpha-regime-dot {
+            background: #22c55e;
+        }
+
+        .alpha-regime-RISK_OFF .alpha-regime-dot {
+            background: #ef4444;
+        }
+
+        .alpha-regime-ROTATION .alpha-regime-dot {
+            background: #60a5fa;
+        }
+
+        .alpha-regime-CHOP .alpha-regime-dot {
+            background: #9ca3af;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* ── Pipeline Progress Bar ── */
+        .pipeline-progress {
+            background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            transition: all 400ms ease;
+            overflow: hidden;
+        }
+
+        .pipeline-progress.hidden {
+            display: none;
+        }
+
+        .pipeline-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .pipeline-progress-step {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--blue-pri);
+            font-family: var(--font-label);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pipeline-progress-step::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--blue-pri);
+            animation: pulse 1.2s infinite;
+        }
+
+        .pipeline-progress-meta {
+            font-size: 11px;
+            color: var(--t4);
+            font-family: var(--font-mono);
+            display: flex;
+            gap: 14px;
+        }
+
+        .pipeline-progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(128, 174, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .pipeline-progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+            transition: width 500ms ease;
+            width: 0%;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .pipeline-progress-detail {
+            font-size: 11px;
+            color: var(--t3);
+            margin-top: 8px;
+            font-family: var(--font-label);
+        }
+
+        .alpha-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 11px;
+            color: var(--t3);
+        }
+
+        .alpha-refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid rgba(128, 174, 255, 0.15);
+            background: rgba(128, 174, 255, 0.08);
+            color: var(--blue-pri);
+            transition: all 200ms;
+            font-family: var(--font-label);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .alpha-refresh-btn:hover {
+            background: rgba(128, 174, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .alpha-refresh-btn.loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .alpha-refresh-btn.loading svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Highlights Row ── */
+        .alpha-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .alpha-hl-item {
+            padding: 14px 18px;
+            background: var(--bg-2);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .alpha-hl-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--t4);
+            font-family: var(--font-label);
+        }
+
+        .alpha-hl-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--t1);
+            font-family: var(--font-label);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .alpha-hl-score {
+            font-size: 11px;
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        /* ── Tabs ── */
+        .alpha-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: var(--bg-2);
+            border-radius: 10px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .alpha-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: var(--font-label);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--t3);
+            transition: all 250ms;
+            border: 1px solid transparent;
+            background: transparent;
+            white-space: nowrap;
+        }
+
+        .alpha-tab:hover {
+            color: var(--t2);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .alpha-tab.active {
+            color: var(--t1);
+        }
+
+        .alpha-tab-alpha.active {
+            background: rgba(34, 197, 94, 0.08);
+            color: #22c55e;
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .alpha-tab-minting.active {
+            background: rgba(105, 246, 184, 0.08);
+            color: var(--green);
+            border-color: rgba(105, 246, 184, 0.2);
+        }
+
+        .alpha-tab-watch.active {
+            background: rgba(245, 158, 11, 0.08);
+            color: #f59e0b;
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .alpha-tab-avoid.active {
+            background: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .alpha-tab-bluechip.active {
+            background: rgba(167, 139, 250, 0.08);
+            color: #a78bfa;
+            border-color: rgba(167, 139, 250, 0.2);
+        }
+
+        .alpha-tab-upcoming.active {
+            background: rgba(96, 165, 250, 0.08);
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.2);
+        }
+
+        .alpha-tab-count {
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .alpha-pane {
+            display: none;
+        }
+
+        .alpha-pane.active {
+            display: block;
+        }
+
+        /* ── Alpha Card Grid ── */
+        .alpha-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 16px;
+        }
+
+        @media (max-width: 860px) {
+            .alpha-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── Alpha Card ── */
+        .alpha-card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            transition: all 250ms;
+            position: relative;
+        }
+
+        .alpha-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Action stripe top */
+        .alpha-card-stripe {
+            height: 3px;
+            width: 100%;
+        }
+
+        /* Card header */
+        .alpha-card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 18px 12px;
+        }
+
+        .alpha-card-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: var(--bg-3);
+            flex-shrink: 0;
+        }
+
+        .alpha-card-img-ph {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--bg-3), var(--bg-elevated));
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .alpha-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .alpha-card-name {
+            font-family: var(--font-label);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--t1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .alpha-card-sub {
+            font-size: 10px;
+            color: var(--t3);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .alpha-card-verified {
+            color: #60a5fa;
+        }
+
+        .alpha-chain-badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            font-family: var(--font-label);
+        }
+
+        .alpha-chain-ETH {
+            background: rgba(98, 126, 234, 0.12);
+            color: #7b93eb;
+        }
+
+        .alpha-chain-BASE {
+            background: rgba(0, 82, 255, 0.12);
+            color: #5b8fff;
+        }
+
+        .alpha-chain-APE {
+            background: rgba(0, 82, 255, 0.12);
+            color: #80aeff;
+        }
+
+        /* Action badge */
+        .alpha-card-action {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            font-family: var(--font-label);
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        /* Score + Grade row */
+        .alpha-score-section {
+            padding: 0 18px 14px;
+        }
+
+        .alpha-score-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .alpha-score-num {
+            font-family: var(--font-mono);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--t1);
+            line-height: 1;
+        }
+
+        .alpha-grade {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 800;
+            font-family: var(--font-label);
+        }
+
+        .alpha-grade-A {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .alpha-grade-B {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+        }
+
+        .alpha-grade-C {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+
+        .alpha-grade-D {
+            background: rgba(156, 163, 175, 0.15);
+            color: #9ca3af;
+        }
+
+        .alpha-grade-AVOID {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .alpha-signal-type {
+            font-size: 11px;
+            color: var(--t3);
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        /* Score bar */
+        .alpha-score-bar-wrap {
+            height: 6px;
+            background: var(--bg-0);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .alpha-score-bar {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 600ms ease;
+        }
+
+        /* Layer breakdown */
+        .alpha-layers {
+            padding: 0 18px;
+            margin-bottom: 14px;
+        }
+
+        .alpha-layer-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 3px 0;
+            font-size: 10px;
+        }
+
+        .alpha-layer-name {
+            width: 72px;
+            font-weight: 600;
+            color: var(--t3);
+            font-family: var(--font-label);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            flex-shrink: 0;
+        }
+
+        .alpha-layer-bar-wrap {
+            flex: 1;
+            height: 4px;
+            background: var(--bg-0);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .alpha-layer-bar {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 400ms ease;
+        }
+
+        .alpha-layer-val {
+            width: 28px;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--t3);
+            text-align: right;
+            font-size: 10px;
+        }
+
+        /* Why Now / Evidence */
+        .alpha-evidence {
+            padding: 12px 18px;
+            margin: 0 18px 14px;
+            background: var(--bg-3);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .alpha-evidence-title {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--t4);
+            margin-bottom: 6px;
+            font-family: var(--font-label);
+        }
+
+        .alpha-evidence-item {
+            font-size: 11px;
+            color: var(--t2);
+            line-height: 1.5;
+            padding: 2px 0 2px 12px;
+            position: relative;
+        }
+
+        .alpha-evidence-item::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--t4);
+        }
+
+        /* Timing + Confidence row */
+        .alpha-timing-row {
+            display: flex;
+            gap: 12px;
+            padding: 0 18px 12px;
+            font-size: 10px;
+        }
+
+        .alpha-timing-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .alpha-timing-label {
+            font-weight: 600;
+            color: var(--t4);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-family: var(--font-label);
+        }
+
+        .alpha-timing-val {
+            font-weight: 600;
+            color: var(--t2);
+            font-family: var(--font-mono);
+        }
+
+        /* Entry / Exit zone */
+        .alpha-zones {
+            padding: 12px 18px;
+            margin: 0 18px 14px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.04), rgba(96, 165, 250, 0.04));
+            border-radius: 8px;
+            border: 1px solid rgba(128, 174, 255, 0.08);
+            font-size: 10px;
+        }
+
+        .alpha-zone-row {
+            display: flex;
+            gap: 8px;
+            padding: 3px 0;
+        }
+
+        .alpha-zone-label {
+            width: 80px;
+            font-weight: 700;
+            color: var(--t4);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-family: var(--font-label);
+            flex-shrink: 0;
+        }
+
+        .alpha-zone-val {
+            color: var(--t2);
+            flex: 1;
+        }
+
+        .alpha-zone-entry .alpha-zone-label {
+            color: #22c55e;
+        }
+
+        .alpha-zone-exit .alpha-zone-label {
+            color: #f59e0b;
+        }
+
+        .alpha-zone-invalid .alpha-zone-label {
+            color: #ef4444;
+        }
+
+        /* Footer stats + links */
+        .alpha-card-footer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-top: 1px solid var(--border);
+            font-size: 10px;
+            color: var(--t4);
+            flex-wrap: wrap;
+        }
+
+        .alpha-foot-stat {
+            font-family: var(--font-mono);
+        }
+
+        .alpha-foot-stat span {
+            color: var(--t2);
+            font-weight: 600;
+        }
+
+        .alpha-foot-links {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .alpha-foot-link {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--t3);
+            background: rgba(255, 255, 255, 0.04);
+            text-decoration: none;
+            transition: all 200ms;
+            font-family: var(--font-label);
+        }
+
+        .alpha-foot-link:hover {
+            color: var(--t1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .alpha-card-freshness {
+            font-size: 9px;
+            color: var(--t4);
+            padding: 4px 18px 10px;
+            font-family: var(--font-mono);
+        }
+
+        /* ── Loading / Empty states ── */
+        .alpha-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--t3);
+            font-size: 14px;
+        }
+
+        .alpha-empty-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .alpha-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            padding: 80px 20px;
+            color: var(--t3);
+        }
+
+        .alpha-spinner {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 3px solid var(--border);
+            border-top-color: var(--blue-pri);
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Summary bar */
+        .alpha-summary-bar {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: var(--t2);
+            line-height: 1.6;
+        }
+
+        .alpha-summary-label {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--blue-pri);
+            font-family: var(--font-label);
+            margin-bottom: 4px;
+        }
+
+        /* Legacy card support */
+        .ins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 14px;
+        }
+
+        .ins-card {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 18px;
+            transition: all 250ms;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ins-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .ins-card-minting {
+            border-left: 3px solid var(--green);
+        }
+
+        .ins-card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .ins-card-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: var(--bg-3);
+            flex-shrink: 0;
+        }
+
+        .ins-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ins-card-name {
+            font-family: var(--font-label);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--t1);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ins-card-chain {
+            font-size: 10px;
+            color: var(--t3);
+            margin-top: 2px;
+            font-family: var(--font-label);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page container — uses the existing app layout from index.css -->
+    <div class="page-container" style="max-width: 1200px; margin: 0 auto; padding: 24px;">
+
+        <!-- Loading state -->
+        <div id="alpha-loading" class="alpha-loading">
+            <div class="alpha-spinner"></div>
+            <div>Loading Alpha Engine...</div>
+        </div>
+
+        <!-- Main content (hidden until loaded) -->
+        <div id="alpha-content" style="display: none;">
+
+            <!-- Regime Header -->
+            <div class="alpha-header" id="alpha-header">
+                <div class="alpha-header-top">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div
+                            style="font-family: var(--font-label); font-size: 18px; font-weight: 800; color: var(--t1); letter-spacing: -0.02em;">
+                            Alpha <span style="color: var(--blue-pri);">Engine</span>
+                        </div>
+                        <div id="regime-tag" class="alpha-regime-tag alpha-regime-CHOP">
+                            <span class="alpha-regime-dot"></span>
+                            <span id="regime-label">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="alpha-meta">
+                        <span id="alpha-updated"></span>
+                        <button class="alpha-refresh-btn" id="refresh-btn" onclick="refreshAlpha()">
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"
+                                style="width:12px;height:12px;">
+                                <path d="M1 8a7 7 0 0 1 13.07-3.38M15 8A7 7 0 0 1 1.93 11.38" />
+                                <path d="M14 1v4h-4M2 15v-4h4" />
+                            </svg>
+                            REFRESH
+                        </button>
+                    </div>
+                </div>
+                <div class="alpha-highlights" id="alpha-highlights"></div>
+            </div>
+
+            <!-- Pipeline Progress Bar -->
+            <div class="pipeline-progress hidden" id="pipeline-progress">
+                <div class="pipeline-progress-header">
+                    <div class="pipeline-progress-step" id="progress-step">Initializing</div>
+                    <div class="pipeline-progress-meta">
+                        <span id="progress-pct">0%</span>
+                        <span id="progress-elapsed">0s</span>
+                    </div>
+                </div>
+                <div class="pipeline-progress-bar">
+                    <div class="pipeline-progress-fill" id="progress-fill" style="width:0%"></div>
+                </div>
+                <div class="pipeline-progress-detail" id="progress-detail">Starting pipeline...</div>
+            </div>
+
+            <!-- Summary -->
+            <div class="alpha-summary-bar" id="alpha-summary">
+                <div class="alpha-summary-label">Market Intelligence</div>
+                <div id="summary-text">Analyzing...</div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="alpha-tabs" id="alpha-tabs">
+                <div class="alpha-tab alpha-tab-alpha active" data-tab="alpha" onclick="switchTab('alpha')">
+                    🎯 Alpha <span class="alpha-tab-count" id="count-alpha">0</span>
+                </div>
+                <div class="alpha-tab alpha-tab-minting" data-tab="minting" onclick="switchTab('minting')">
+                    🟢 Minting <span class="alpha-tab-count" id="count-minting">0</span>
+                </div>
+                <div class="alpha-tab alpha-tab-watch" data-tab="watch" onclick="switchTab('watch')">
+                    👀 Watch <span class="alpha-tab-count" id="count-watch">0</span>
+                </div>
+                <div class="alpha-tab alpha-tab-avoid" data-tab="avoid" onclick="switchTab('avoid')">
+                    ⚠️ Avoid <span class="alpha-tab-count" id="count-avoid">0</span>
+                </div>
+                <div class="alpha-tab alpha-tab-bluechip" data-tab="bluechip" onclick="switchTab('bluechip')">
+                    👑 Blue Chips <span class="alpha-tab-count" id="count-bluechip">0</span>
+                </div>
+                <div class="alpha-tab alpha-tab-upcoming" data-tab="upcoming" onclick="switchTab('upcoming')">
+                    🚀 Upcoming <span class="alpha-tab-count" id="count-upcoming">0</span>
+                </div>
+            </div>
+
+            <!-- Panes -->
+            <div class="alpha-pane active" id="pane-alpha">
+                <div class="alpha-grid" id="grid-alpha"></div>
+            </div>
+            <div class="alpha-pane" id="pane-minting">
+                <div class="alpha-grid" id="grid-minting"></div>
+            </div>
+            <div class="alpha-pane" id="pane-watch">
+                <div class="alpha-grid" id="grid-watch"></div>
+            </div>
+            <div class="alpha-pane" id="pane-avoid">
+                <div class="alpha-grid" id="grid-avoid"></div>
+            </div>
+            <div class="alpha-pane" id="pane-bluechip">
+                <div class="alpha-grid" id="grid-bluechip"></div>
+            </div>
+            <div class="alpha-pane" id="pane-upcoming">
+                <div class="alpha-grid" id="grid-upcoming"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ═══════════════════════════════════════════ */
+        /*  Alpha Engine Dashboard JS                 */
+        /* ═══════════════════════════════════════════ */
+
+        const LAYER_NAMES = {
+            smart_money: 'SMART',
+            early_momentum: 'MOMENTUM',
+            supply_shock: 'SUPPLY',
+            volume_anomaly: 'VOLUME',
+            mint_quality: 'MINT',
+            holder_quality: 'HOLDERS',
+            narrative: 'SOCIAL',
+            risk: 'RISK',
+        };
+
+        const LAYER_COLORS = {
+            smart_money: '#22c55e',
+            early_momentum: '#f59e0b',
+            supply_shock: '#60a5fa',
+            volume_anomaly: '#a78bfa',
+            mint_quality: '#ec4899',
+            holder_quality: '#14b8a6',
+            narrative: '#8b5cf6',
+            risk: '#ef4444',
+        };
+
+        const LAYER_ORDER = [
+            'smart_money', 'early_momentum', 'supply_shock', 'volume_anomaly',
+            'mint_quality', 'holder_quality', 'narrative', 'risk',
+        ];
+
+        let currentTab = 'alpha';
+        let cachedData = null;
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.alpha-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.alpha-pane').forEach(p => p.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            document.getElementById(`pane-${tab}`).classList.add('active');
+        }
+
+        function scoreColor(score) {
+            if (score >= 75) return '#22c55e';
+            if (score >= 60) return '#60a5fa';
+            if (score >= 45) return '#f59e0b';
+            if (score >= 30) return '#f97316';
+            return '#ef4444';
+        }
+
+        function formatPrice(v, sym) {
+            if (!v || v <= 0) return '—';
+            if (v < 0.01) return v.toFixed(6) + ' ' + (sym || 'ETH');
+            if (v < 1) return v.toFixed(4) + ' ' + (sym || 'ETH');
+            if (v < 100) return v.toFixed(3) + ' ' + (sym || 'ETH');
+            return v.toFixed(1) + ' ' + (sym || 'ETH');
+        }
+
+        function formatVol(v) {
+            if (!v || v <= 0) return '—';
+            if (v < 0.01) return v.toFixed(4);
+            if (v < 10) return v.toFixed(2);
+            if (v < 1000) return v.toFixed(1);
+            return (v / 1000).toFixed(1) + 'K';
+        }
+
+        /* ── Render Alpha Card ── */
+        function renderAlphaCard(card) {
+            const layers = card.layers || {};
+            const actionColor = card.action_color || '#6b7280';
+            const gradeClass = card.grade === 'AVOID' ? 'AVOID' : card.grade;
+            const chainClass = card.chain_label || 'ETH';
+
+            // Image
+            const imgHtml = card.image
+                ? `<img class="alpha-card-img" src="${card.image}" alt="" loading="lazy" onerror="this.outerHTML='<div class=\\'alpha-card-img-ph\\'>🖼</div>'">`
+                : `<div class="alpha-card-img-ph">🖼</div>`;
+
+            // Layer bars
+            let layerHtml = '';
+            for (const key of LAYER_ORDER) {
+                const layer = layers[key] || {};
+                const score = key === 'risk' ? Math.abs(layer.score || 0) : (layer.score || 0);
+                const color = LAYER_COLORS[key];
+                const isRisk = key === 'risk';
+                const label = isRisk && layer.score < 0 ? `-${score}` : score;
+                layerHtml += `
+                <div class="alpha-layer-row">
+                    <div class="alpha-layer-name">${LAYER_NAMES[key]}</div>
+                    <div class="alpha-layer-bar-wrap">
+                        <div class="alpha-layer-bar" style="width: ${score}%; background: ${color}; opacity: ${isRisk ? 0.7 : 1};"></div>
+                    </div>
+                    <div class="alpha-layer-val" style="color: ${color};">${label}</div>
+                </div>`;
+            }
+
+            // Evidence
+            let evidenceHtml = '';
+            const reasons = card.why_now || card.top_reasons || [];
+            if (reasons.length > 0) {
+                evidenceHtml = `
+                <div class="alpha-evidence">
+                    <div class="alpha-evidence-title">Why Now</div>
+                    ${reasons.slice(0, 4).map(r => `<div class="alpha-evidence-item">${escHtml(r)}</div>`).join('')}
+                </div>`;
+            }
+
+            // Entry / Exit zones
+            let zoneHtml = '';
+            if (card.entry_zone && card.action !== 'AVOID') {
+                zoneHtml = `
+                <div class="alpha-zones">
+                    <div class="alpha-zone-row alpha-zone-entry">
+                        <div class="alpha-zone-label">Entry</div>
+                        <div class="alpha-zone-val">${escHtml(card.entry_zone)}</div>
+                    </div>
+                    <div class="alpha-zone-row alpha-zone-invalid">
+                        <div class="alpha-zone-label">Invalid</div>
+                        <div class="alpha-zone-val">${escHtml(card.invalidation || 'N/A')}</div>
+                    </div>
+                    <div class="alpha-zone-row alpha-zone-exit">
+                        <div class="alpha-zone-label">Exit</div>
+                        <div class="alpha-zone-val">${escHtml(card.exit_logic || 'N/A')}</div>
+                    </div>
+                </div>`;
+            }
+
+            // Verified badge
+            const verifiedBadge = card.verified ? '<span class="alpha-card-verified">✓</span>' : '';
+
+            // Links
+            const links = [];
+            if (card.opensea_url) links.push(`<a href="${card.opensea_url}" target="_blank" class="alpha-foot-link">🌊 OpenSea</a>`);
+            if (card.explorer_url) links.push(`<a href="${card.explorer_url}" target="_blank" class="alpha-foot-link">📜 Explorer</a>`);
+            if (card.twitter) links.push(`<a href="https://x.com/${card.twitter}" target="_blank" class="alpha-foot-link">𝕏 @${card.twitter}</a>`);
+
+            return `
+        <div class="alpha-card" id="card-${card.slug}">
+            <div class="alpha-card-stripe" style="background: ${actionColor};"></div>
+
+            <div class="alpha-card-head">
+                ${imgHtml}
+                <div class="alpha-card-info">
+                    <div class="alpha-card-name">${escHtml(card.name || card.slug)}</div>
+                    <div class="alpha-card-sub">
+                        ${verifiedBadge}
+                        <span>${(card.owners || 0).toLocaleString()} owners</span>
+                        <span class="alpha-chain-badge alpha-chain-${chainClass}">${chainClass}</span>
+                    </div>
+                </div>
+                <div class="alpha-card-action" style="background: ${actionColor}20; color: ${actionColor}; border: 1px solid ${actionColor}40;">
+                    ${card.action || 'WATCH'}
+                </div>
+            </div>
+
+            <div class="alpha-score-section">
+                <div class="alpha-score-top">
+                    <div class="alpha-score-num" style="color: ${scoreColor(card.opportunity_score)}">${card.opportunity_score}</div>
+                    <div class="alpha-grade alpha-grade-${gradeClass}">Grade ${card.grade}</div>
+                    <div class="alpha-signal-type">${escHtml(card.signal_type || '')}</div>
+                </div>
+                <div class="alpha-score-bar-wrap">
+                    <div class="alpha-score-bar" style="width: ${card.opportunity_score}%; background: ${scoreColor(card.opportunity_score)};"></div>
+                </div>
+            </div>
+
+            <div class="alpha-layers">${layerHtml}</div>
+
+            ${evidenceHtml}
+
+            <div class="alpha-timing-row">
+                <div class="alpha-timing-item">
+                    <div class="alpha-timing-label">Timing</div>
+                    <div class="alpha-timing-val">${card.timing || '—'}</div>
+                </div>
+                <div class="alpha-timing-item">
+                    <div class="alpha-timing-label">Confidence</div>
+                    <div class="alpha-timing-val">${card.confidence || 0}%</div>
+                </div>
+                <div class="alpha-timing-item">
+                    <div class="alpha-timing-label">Horizon</div>
+                    <div class="alpha-timing-val">${card.time_horizon || '—'}</div>
+                </div>
+                <div class="alpha-timing-item">
+                    <div class="alpha-timing-label">Risk</div>
+                    <div class="alpha-timing-val" style="color: ${card.risk_score > 30 ? '#ef4444' : card.risk_score > 15 ? '#f59e0b' : '#22c55e'}">${card.risk_score || 0}</div>
+                </div>
+            </div>
+
+            ${zoneHtml}
+
+            <div class="alpha-card-footer">
+                <div class="alpha-foot-stat">Floor: <span>${formatPrice(card.floor_price, card.floor_symbol)}</span></div>
+                <div class="alpha-foot-stat">Vol 24h: <span>${formatVol(card.volume_1d)}</span></div>
+                <div class="alpha-foot-stat">Listings: <span>${card.total_listings || 0}</span></div>
+                <div class="alpha-foot-links">${links.join('')}</div>
+            </div>
+            ${card.debug ? `
+            <details style="padding: 4px 18px 10px; font-size: 9px; color: var(--t4);">
+                <summary style="cursor: pointer; font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.04em;">DEBUG TRACE</summary>
+                <div style="margin-top: 6px; padding: 8px; background: var(--bg-0); border-radius: 4px; font-family: var(--font-mono); line-height: 1.6; white-space: pre-wrap;">${escHtml(card.debug.decision_trace || '')}
+raw_positive: ${card.debug.raw_positive_score || 0}
+risk_penalty: ${card.debug.risk_penalty || 0}
+na_layers: ${(card.debug.na_layers || []).join(', ') || 'none'}
+weights: ${Object.entries(card.debug.effective_weights || {}).map(([k, v]) => k + '=' + v).join(', ')}</div>
+            </details>` : ''}
+            <div class="alpha-card-freshness">● Data from ${card.data_freshness ? 'just now' : '—'}</div>
+        </div>`;
+        }
+
+        /* ── Render Legacy Card (for minting/upcoming tabs) ── */
+        function renderLegacyCard(card) {
+            const imgHtml = card.image
+                ? `<img class="ins-card-img" src="${card.image}" alt="" loading="lazy" onerror="this.style.display='none'">`
+                : '';
+            const chain = card.chain_label || 'ETH';
+            const mintBadge = card.is_minting
+                ? `<div style="position:absolute;top:10px;right:10px;padding:3px 8px;border-radius:12px;font-size:9px;font-weight:700;background:rgba(105,246,184,0.15);color:var(--green);border:1px solid rgba(105,246,184,0.2);font-family:var(--font-label);text-transform:uppercase;display:flex;align-items:center;gap:4px;">
+                <span style="width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite;"></span> MINTING
+               </div>`
+                : '';
+
+            return `
+        <div class="ins-card ${card.is_minting ? 'ins-card-minting' : ''}" style="position:relative;">
+            ${mintBadge}
+            <div class="ins-card-top">
+                ${imgHtml}
+                <div class="ins-card-info">
+                    <div class="ins-card-name">${escHtml(card.name || card.slug || 'Unknown')}</div>
+                    <div class="ins-card-chain">${chain} · ${card.num_owners || 0} owners</div>
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--t3);">
+                ${card.floor_price ? `<div>Floor: <strong style="color:var(--t1)">${formatPrice(card.floor_price, card.floor_symbol)}</strong></div>` : ''}
+                ${card.volume_1d ? `<div>Vol 24h: <strong style="color:var(--t1)">${formatVol(card.volume_1d)}</strong></div>` : ''}
+                ${card.score ? `<div>Score: <strong style="color:var(--t1)">${card.score}</strong></div>` : ''}
+            </div>
+            ${card.reasons && card.reasons.length ? `<div style="margin-top:8px;font-size:10px;color:var(--t3);line-height:1.5;">${card.reasons.slice(0, 3).map(r => '→ ' + escHtml(r)).join('<br>')}</div>` : ''}
+            ${card.primary_link ? `<div style="margin-top:10px;"><a href="${card.primary_link}" target="_blank" style="color:var(--blue-pri);font-size:11px;text-decoration:none;font-weight:600;">${card.primary_link_label || 'View'} →</a></div>` : ''}
+        </div>`;
+        }
+
+        /* ── Render Upcoming Card ── */
+        function renderUpcomingCard(card) {
+            const dateBadge = card.date && card.date !== 'TBA'
+                ? `<span style="color:var(--green);font-weight:600;">${escHtml(card.date)}</span>`
+                : '<span style="color:var(--t4);">TBA</span>';
+            const sourceBadge = card.source_name
+                ? `<span style="display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:600;background:rgba(96,165,250,0.12);color:var(--blue-pri);letter-spacing:0.04em;">${escHtml(card.source_name)}</span>`
+                : '';
+            const descHtml = card.description
+                ? `<div style="font-size:10px;color:var(--t4);line-height:1.4;margin-top:6px;max-height:40px;overflow:hidden;">${escHtml(card.description.substring(0, 150))}</div>`
+                : '';
+            return `
+        <div class="ins-card">
+            <div class="ins-card-top">
+                ${card.image ? `<img class="ins-card-img" src="${card.image}" alt="" loading="lazy" onerror="this.style.display='none'" style="width:40px;height:40px;border-radius:8px;object-fit:cover;">` : ''}
+                <div class="ins-card-info">
+                    <div class="ins-card-name">${escHtml(card.name || 'Unknown')}</div>
+                    <div class="ins-card-chain">${card.chain_label || card.chain || '?'} · ${dateBadge} ${sourceBadge}</div>
+                </div>
+            </div>
+            <div style="font-size:11px;color:var(--t3);line-height:1.6;margin-top:4px;">
+                ${card.price ? `Price: <strong style="color:var(--t1)">${escHtml(card.price)}</strong><br>` : ''}
+                ${card.supply ? `Supply: <strong style="color:var(--t1)">${card.supply.toLocaleString ? card.supply.toLocaleString() : card.supply}</strong><br>` : ''}
+            </div>
+            ${descHtml}
+            ${card.link ? `<div style="margin-top:8px;"><a href="${card.link}" target="_blank" style="color:var(--blue-pri);font-size:11px;text-decoration:none;font-weight:600;">View Details →</a></div>` : ''}
+        </div>`;
+        }
+
+        function escHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        /* ── Render Dashboard Header ── */
+        function renderHeader(data) {
+            const header = data.dashboard_header || {};
+            const regime = data.regime || {};
+
+            // Regime tag
+            const regimeEl = document.getElementById('regime-tag');
+            const regimeLabel = document.getElementById('regime-label');
+            regimeEl.className = `alpha-regime-tag alpha-regime-${regime.regime || 'CHOP'}`;
+            regimeLabel.textContent = regime.regime_label || 'Loading...';
+
+            // Highlights
+            const hlEl = document.getElementById('alpha-highlights');
+            const items = [];
+            if (header.best_opportunity && header.best_opportunity.name) {
+                items.push({
+                    label: '🎯 Best Opportunity', name: header.best_opportunity.name,
+                    score: `Score ${header.best_opportunity.score}/${header.best_opportunity.grade}`, color: '#22c55e'
+                });
+            }
+            if (header.highest_conviction && header.highest_conviction.name) {
+                items.push({
+                    label: '🔥 Highest Conviction', name: header.highest_conviction.name,
+                    score: `${header.highest_conviction.confidence}% conf`, color: '#f59e0b'
+                });
+            }
+            if (header.best_early_entry && header.best_early_entry.name) {
+                items.push({
+                    label: '⏰ Best Early Entry', name: header.best_early_entry.name,
+                    score: `Score ${header.best_early_entry.score}`, color: '#60a5fa'
+                });
+            }
+            if (header.most_dangerous && header.most_dangerous.name) {
+                items.push({
+                    label: '⚠️ Most Dangerous', name: header.most_dangerous.name,
+                    score: header.most_dangerous.signal_type || 'AVOID', color: '#ef4444'
+                });
+            }
+            if (header.best_post_mint && header.best_post_mint.name) {
+                items.push({
+                    label: '🚀 Best Post-Mint', name: header.best_post_mint.name,
+                    score: `Score ${header.best_post_mint.score}/${header.best_post_mint.grade}`, color: '#ec4899'
+                });
+            }
+
+            hlEl.innerHTML = items.map(i => `
+            <div class="alpha-hl-item">
+                <div class="alpha-hl-label">${i.label}</div>
+                <div class="alpha-hl-name">${escHtml(i.name)}</div>
+                <div class="alpha-hl-score" style="color: ${i.color}">${i.score}</div>
+            </div>
+        `).join('') || '<div class="alpha-hl-item"><div class="alpha-hl-label">No signals yet</div></div>';
+
+            // Summary
+            document.getElementById('summary-text').textContent = data.market_summary || 'Analyzing...';
+
+            // Updated time
+            const stats = data.stats || {};
+            document.getElementById('alpha-updated').textContent =
+                `${stats.total_collections_analyzed || 0} analyzed · ${stats.analysis_time_ms || 0}ms`;
+        }
+
+        /* ── Render All ── */
+        function renderDashboard(data) {
+            cachedData = data;
+
+            // Hide loading, show content
+            document.getElementById('alpha-loading').style.display = 'none';
+            document.getElementById('alpha-content').style.display = 'block';
+
+            // Render header
+            renderHeader(data);
+
+            // Classify alpha cards into lanes — FIXED thresholds
+            const alphaCards = data.alpha_cards || [];
+
+            // Alpha tab: BUY NOW + high-scoring WATCH
+            const alphaLane = alphaCards.filter(c =>
+                c.action === 'BUY NOW' ||
+                (c.action === 'WATCH CLOSELY' && c.opportunity_score >= 35)
+            );
+
+            // Watch tab: remaining WATCH + TOO EARLY
+            const watchCards = alphaCards.filter(c =>
+                (c.action === 'WATCH CLOSELY' && c.opportunity_score < 35) ||
+                c.action === 'TOO EARLY'
+            );
+
+            // Avoid tab: only truly bad signals
+            const avoidCards = alphaCards.filter(c =>
+                c.action === 'AVOID' || c.action === 'TOO LATE'
+            );
+
+            const mintingCards = data.minting_now || [];
+            const bcAlerts = data.bluechip_alerts || [];
+            const upcomingCards = data.upcoming || [];
+
+            // Update tab counts
+            document.getElementById('count-alpha').textContent = alphaLane.length;
+            document.getElementById('count-minting').textContent = mintingCards.length;
+            document.getElementById('count-watch').textContent = watchCards.length;
+            document.getElementById('count-avoid').textContent = avoidCards.length;
+            document.getElementById('count-bluechip').textContent = bcAlerts.length;
+            document.getElementById('count-upcoming').textContent = upcomingCards.length;
+
+            // Alpha pane
+            const gridAlpha = document.getElementById('grid-alpha');
+            gridAlpha.innerHTML = alphaLane.length > 0
+                ? alphaLane.map(c => renderAlphaCard(c)).join('')
+                : '<div class="alpha-empty"><div class="alpha-empty-icon">🔍</div>No alpha signals yet. Engine is bootstrapping...</div>';
+
+            // Minting pane
+            const gridMinting = document.getElementById('grid-minting');
+            gridMinting.innerHTML = mintingCards.length > 0
+                ? mintingCards.map(c => renderLegacyCard(c)).join('')
+                : '<div class="alpha-empty"><div class="alpha-empty-icon">🟢</div>No active mints detected</div>';
+
+            // Watch pane
+            const gridWatch = document.getElementById('grid-watch');
+            gridWatch.innerHTML = watchCards.length > 0
+                ? watchCards.map(c => renderAlphaCard(c)).join('')
+                : '<div class="alpha-empty"><div class="alpha-empty-icon">👀</div>No collections on watch list</div>';
+
+            // Avoid pane
+            const gridAvoid = document.getElementById('grid-avoid');
+            gridAvoid.innerHTML = avoidCards.length > 0
+                ? avoidCards.map(c => renderAlphaCard(c)).join('')
+                : '<div class="alpha-empty"><div class="alpha-empty-icon">✅</div>No collections flagged to avoid</div>';
+
+            // Blue chip pane
+            const gridBC = document.getElementById('grid-bluechip');
+            gridBC.innerHTML = bcAlerts.length > 0
+                ? bcAlerts.map(c => renderLegacyCard(c)).join('')
+                : '<div class="alpha-empty"><div class="alpha-empty-icon">👑</div>No blue-chip alerts</div>';
+
+            // Upcoming pane
+            const gridUp = document.getElementById('grid-upcoming');
+            gridUp.innerHTML = upcomingCards.length > 0
+                ? upcomingCards.map(c => renderUpcomingCard(c)).join('')
+                : '<div class="alpha-empty"><div class="alpha-empty-icon">🚀</div>No upcoming mints found</div>';
+        }
+
+        /* ── Data Fetching ── */
+        async function fetchAlpha() {
+            try {
+                const r = await fetch('/api/insights');
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const data = await r.json();
+                if (data.status === 'ok' || data.alpha_cards) {
+                    renderDashboard(data);
+                } else if (data.status === 'loading') {
+                    setTimeout(fetchAlpha, 3000);
+                }
+            } catch (e) {
+                console.error('Fetch failed:', e);
+                setTimeout(fetchAlpha, 5000);
+            }
+        }
+
+        // ── Progress Bar Polling ──
+        let progressPollId = null;
+        let isInitialLoad = true;
+
+        function startProgressPolling() {
+            const el = document.getElementById('pipeline-progress');
+            el.classList.remove('hidden');
+            if (progressPollId) return;
+            progressPollId = setInterval(async () => {
+                try {
+                    const r = await fetch('/api/insights/progress');
+                    const p = await r.json();
+                    if (p.running) {
+                        document.getElementById('progress-step').textContent = p.step || 'Working';
+                        document.getElementById('progress-pct').textContent = p.pct + '%';
+                        document.getElementById('progress-elapsed').textContent = p.elapsed + 's';
+                        document.getElementById('progress-fill').style.width = p.pct + '%';
+                        document.getElementById('progress-detail').textContent = p.detail || '';
+                    } else if (p.pct >= 100) {
+                        stopProgressPolling();
+                    }
+                } catch (e) { }
+            }, 1500);
+        }
+
+        function stopProgressPolling() {
+            if (progressPollId) {
+                clearInterval(progressPollId);
+                progressPollId = null;
+            }
+            const el = document.getElementById('pipeline-progress');
+            document.getElementById('progress-fill').style.width = '100%';
+            document.getElementById('progress-step').textContent = 'Complete';
+            document.getElementById('progress-detail').textContent = '';
+            setTimeout(() => el.classList.add('hidden'), 1200);
+        }
+
+        async function refreshAlpha() {
+            const btn = document.getElementById('refresh-btn');
+            btn.classList.add('loading');
+            startProgressPolling();
+            try {
+                const r = await fetch('/api/insights/refresh');
+                const data = await r.json();
+                if (data.status === 'ok' || data.alpha_cards) {
+                    renderDashboard(data);
+                }
+            } catch (e) {
+                console.error('Refresh failed:', e);
+            } finally {
+                btn.classList.remove('loading');
+                stopProgressPolling();
+            }
+        }
+
+        // Auto-refresh every 5 minutes
+        setInterval(fetchAlpha, 300000);
+
+        // Initial load — start progress polling
+        startProgressPolling();
+        fetchAlpha().then(() => { stopProgressPolling(); isInitialLoad = false; });
+    </script>
+</body>
+
+</html>

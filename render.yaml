@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: mintbot-insights
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    envVars:
+      - key: OPENSEA_API_KEY
+        sync: false
+      - key: OPENSEA_MCP_TOKEN
+        sync: false
+      - key: PORT
+        value: 10000
