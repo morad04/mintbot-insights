@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MintBot — Alpha Engine</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: #0a0e1a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700
+        }
+
+        .logo span {
+            color: #3b82f6
+        }
+
+        .badge {
+            background: #1e293b;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #94a3b8
+        }
+
+        .badge::before {
+            content: '● ';
+            color: #22c55e
+        }
+
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 4px
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 16px
+        }
+
+        .card {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #1e293b
+        }
+
+        .card-value {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 4px
+        }
+
+        .card-sub {
+            font-size: 13px;
+            margin-top: 2px
+        }
+
+        .card-sub.green {
+            color: #22c55e
+        }
+
+        .card-sub.yellow {
+            color: #eab308
+        }
+
+        .card-sub.red {
+            color: #ef4444
+        }
+
+        /* Intelligence bar */
+        .intel {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.8
+        }
+
+        .intel strong {
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 11px
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap
+        }
+
+        .tab {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: .2s
+        }
+
+        .tab:hover {
+            border-color: #3b82f6;
+            color: #e2e8f0
+        }
+
+        .tab.active {
+            background: #1e3a5f;
+            border-color: #3b82f6;
+            color: #e2e8f0
+        }
+
+        .tab .count {
+            background: #1e293b;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+            font-size: 11px
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px
+        }
+
+        .item {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            transition: .2s
+        }
+
+        .item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px)
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px
+        }
+
+        .item-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #1e293b
+        }
+
+        .item-name {
+            font-size: 15px;
+            font-weight: 600
+        }
+
+        .item-chain {
+            font-size: 12px;
+            color: #94a3b8
+        }
+
+        .item-meta {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 8px;
+            line-height: 1.6
+        }
+
+        .item-link {
+            color: #3b82f6;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 8px
+        }
+
+        .item-link:hover {
+            text-decoration: underline
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-right: 4px
+        }
+
+        .tag-mint {
+            background: #064e3b;
+            color: #34d399
+        }
+
+        .tag-soon {
+            background: #78350f;
+            color: #fbbf24
+        }
+
+        .tag-src {
+            background: #1e293b;
+            color: #94a3b8
+        }
+
+        .score-badge {
+            background: #1e3a5f;
+            color: #60a5fa;
+            padding: 3px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600
+        }
+
+        /* Updated */
+        .updated {
+            text-align: center;
+            padding: 20px;
+            color: #475569;
+            font-size: 12px
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px;
+            color: #64748b;
+            font-size: 16px
+        }
+
+        @media(max-width:768px) {
+            .cards {
+                grid-template-columns: 1fr
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .tabs {
+                gap: 4px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="app">
+        <div class="loading">⏳ Loading insights data...</div>
+    </div>
+    <script>
+        const TABS = [
+            { key: 'alpha', label: '💎 Alpha', color: '#8b5cf6' },
+            { key: 'minting_now', label: '🟢 Minting', color: '#22c55e' },
+            { key: 'watch', label: '👀 Watch', color: '#eab308' },
+            { key: 'avoid', label: '⚠️ Avoid', color: '#ef4444' },
+            { key: 'blue_chips', label: '👑 Blue Chips', color: '#f59e0b' },
+            { key: 'upcoming', label: '🚀 Upcoming', color: '#8b5cf6' },
+        ];
+        let DATA = null, activeTab = 'alpha';
+
+        async function loadData() {
+            try {
+                const r = await fetch('data.json?t=' + Date.now());
+                DATA = await r.json();
+                render();
+            } catch (e) {
+                document.getElementById('app').innerHTML = '<div class="loading">❌ No data yet — pipeline is running. Refresh in a few minutes.</div>';
+            }
+        }
+
+        function render() {
+            if (!DATA) return;
+            const h = DATA.header || {};
+            const counts = {};
+            TABS.forEach(t => counts[t.key] = (DATA[t.key] || []).length);
+
+            let html = `<div class="header">
+    <div class="header-top">
+      <div><span class="logo">Alpha <span>Engine</span></span></div>
+      <div class="badge">${h.market_sentiment || 'Loading...'}</div>
+    </div>
+    <div class="cards">
+      <div class="card"><div class="stat-label">💎 BEST OPPORTUNITY</div><div class="card-value">${h.best_opportunity || '—'}</div><div class="card-sub green">${h.best_score || ''}</div></div>
+      <div class="card"><div class="stat-label">🔥 HIGHEST CONVICTION</div><div class="card-value">${h.highest_conviction || '—'}</div><div class="card-sub yellow">${h.highest_confidence || ''}</div></div>
+      <div class="card"><div class="stat-label">⚠️ MOST DANGEROUS</div><div class="card-value">${h.most_dangerous || '—'}</div><div class="card-sub red">${h.danger_reason || ''}</div></div>
+    </div>
+  </div>`;
+
+            // Intelligence bar
+            const s = DATA.summary || {};
+            html += `<div class="intel"><strong>MARKET INTELLIGENCE</strong><br>
+    💎 ${counts.alpha} BUY NOW signals. 👀 ${counts.watch} to WATCH. ⚠️ ${counts.avoid} flagged AVOID.
+    🟢 ${counts.minting_now} live mints. 🚀 ${counts.upcoming} upcoming. 👑 ${counts.blue_chips} BC alerts.
+    Market: ${h.market_sentiment || '—'}
+  </div>`;
+
+            // Tabs
+            html += '<div class="tabs">';
+            TABS.forEach(t => {
+                html += `<div class="tab ${activeTab === t.key ? 'active' : ''}" onclick="switchTab('${t.key}')">${t.label}<span class="count">${counts[t.key] || 0}</span></div>`;
+            });
+            html += '</div>';
+
+            // Grid
+            const items = DATA[activeTab] || [];
+            html += '<div class="grid">';
+            if (items.length === 0) {
+                html += '<div class="loading">No items in this category</div>';
+            }
+            items.forEach(item => {
+                const img = item.image || item.collection_image || '';
+                const name = item.name || item.collection || item.slug || '?';
+                const chain = item.chain || item.chain_label || '';
+                const slug = item.slug || item.collection_slug || '';
+                const score = item.score ? `<span class="score-badge">${item.score}/${item.grade || '?'}</span> ` : '';
+
+                let meta = '';
+                if (activeTab === 'minting_now') {
+                    meta += `→ 🔗 Chain: ${chain}<br>`;
+                    if (item.mint_stages) meta += `→ 🎭 ${item.mint_stages} mint stages<br>`;
+                    meta += `→ ✅ Verified via OpenSea MCP`;
+                } else if (activeTab === 'upcoming') {
+                    const price = item.price != null ? (item.price === 0 ? 'Free' : item.price + ' ' + (item.price_symbol || 'ETH')) : '—';
+                    meta += `Price: <b>${price}</b><br>`;
+                    if (item.description) meta += item.description.slice(0, 120) + (item.description.length > 120 ? '...' : '');
+                } else if (activeTab === 'alpha' || activeTab === 'watch') {
+                    if (item.confidence) meta += `Confidence: ${item.confidence}%<br>`;
+                    if (item.signals && item.signals.length) meta += item.signals.slice(0, 3).map(s => '→ ' + s).join('<br>');
+                } else if (activeTab === 'avoid') {
+                    if (item.risk_flags && item.risk_flags.length) meta += item.risk_flags.map(r => '⚠️ ' + r).join('<br>');
+                    else if (item.signals) meta += item.signals.slice(0, 3).map(s => '→ ' + s).join('<br>');
+                } else if (activeTab === 'blue_chips') {
+                    if (item.floor_price) meta += `Floor: ${item.floor_price} ${item.floor_symbol || 'ETH'}<br>`;
+                    if (item.change_7d) meta += `7d Change: ${item.change_7d}<br>`;
+                    if (item.signals) meta += item.signals.slice(0, 2).map(s => '→ ' + s).join('<br>');
+                }
+
+                let tags = '';
+                if (activeTab === 'minting_now') tags = '<span class="tag tag-mint">Minting</span>';
+                if (activeTab === 'upcoming') tags = '<span class="tag tag-soon">Minting Soon</span><span class="tag tag-src">OpenSea Discovery</span>';
+
+                html += `<div class="item">
+      <div class="item-header">
+        ${img ? `<img class="item-img" src="${img}" onerror="this.style.display='none'">` : '<div class="item-img"></div>'}
+        <div><div class="item-name">${score}${name}</div><div class="item-chain">${chain} ${tags}</div></div>
+      </div>
+      <div class="item-meta">${meta}</div>
+      ${slug ? `<a class="item-link" href="https://opensea.io/collection/${slug}/overview" target="_blank">View on OpenSea →</a>` : ''}
+    </div>`;
+            });
+            html += '</div>';
+
+            // Updated timestamp
+            const ts = DATA.generated_at || DATA.timestamp || '';
+            html += `<div class="updated">Last updated: ${ts ? new Date(ts * 1000).toLocaleString() : 'Unknown'} — Auto-refreshes every 2 hours via GitHub Actions</div>`;
+
+            document.getElementById('app').innerHTML = html;
+        }
+
+        function switchTab(key) { activeTab = key; render(); }
+        loadData();
+    </script>
+</body>
+
+</html>
